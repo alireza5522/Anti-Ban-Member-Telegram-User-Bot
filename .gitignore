@@ -5,8 +5,6 @@ __pycache__/
 *.json
 *.session
 *.session-journal
-*.txt
 *.log
 *.bat
-**/files/*.json
 **/keys.py
