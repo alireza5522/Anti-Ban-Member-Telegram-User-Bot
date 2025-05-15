@@ -4,7 +4,9 @@ from pyrogram.types import Message
 import time
 from datetime import datetime
 from plugins.functions import *
-from keys import WATCH_LIST_PATH
+from keys import WATCH_LIST_PATH,LOG_PATH
+from .safepost import check_post
+import json
 
 @Client.on_message(filters.command('start') & filters.me) 
 async def slashstart(c:Client,m:Message):    
@@ -43,3 +45,18 @@ async def clearch(c:Client,m:Message):
         file.write('')
     await m.reply_text(text="ok!")
     
+@Client.on_message(filters.channel) 
+async def clearch(c:Client,m:Message):
+    with open(f"{application_path}{WATCH_LIST_PATH}",'r') as file:
+        channels = file.read()
+    channels = channels.split()
+    print(m)
+    print(channels)
+    if f"@{m.sender_chat.username}" in channels:
+        isok,data = await check_post(m)
+        print(data,isok)
+        with open(f"{application_path}{LOG_PATH}",'a',encoding="utf-8") as file:
+            file.write(json.dumps(data,indent=4,ensure_ascii=False))
+        if isok == 'False':
+            await c.delete_messages(chat_id=m.sender_chat.id,message_ids=m.id)
+

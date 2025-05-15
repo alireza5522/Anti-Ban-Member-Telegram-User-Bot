@@ -18,7 +18,7 @@ from keys import WATCH_LIST_PATH
 if getattr(sys, 'frozen', False):
     application_path = os.path.dirname(sys.executable)
 else:
-    application_path = os.path.dirname(os.path.abspath(__file__)) + '\\..'
+    application_path = os.path.dirname(os.path.abspath(__file__)) + '/..'
 
 class LoopControl:
     def __init__(self):
